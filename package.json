@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "commander": "^10.0.0",
     "nodemon": "^2.0.21"
   },
   "name": "goit-nodejs-hw-01",
