@@ -11,29 +11,29 @@ program
 
 program.parse(process.argv);
 
-const argv = program.opts();
+const { action, id, name, email, phone } = program.opts();
 
-function invokeAction({ action, id, name, email, phone }) {
-  switch (action) {
-    case "list":
-        listContacts()
-        break;
-
-    case "get":
-        getContactById(id)
-        break;
-
-    case "remove":
-        removeContact(id)
-        break;
-
-    case "add":
-        addContact(name, email, phone)
-        break;  
-
-    default:
-      console.warn("\x1B[31m Unknown action type!");
+(async () => {
+  if (action === "list") {
+    const result = await listContacts();
+    console.table(result);
   }
-}
 
-invokeAction(argv);
+  if (action === "get") {
+    const result = await getContactById(id);
+    if (!result) {
+      throw new Error(`Task by id=${id} not found`);
+    }
+    console.table(result);
+  }
+
+  if (action === "add") {
+    const result = await addContact(name, email, phone);
+    console.table(result);
+  }
+
+  if (action === "remove") {
+    const result = await removeContact(id);
+    console.table(result);
+  }
+})();

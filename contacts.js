@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const crypto = require("crypto");
 
 const contactsPath = path.join(__dirname,'db', 'contacts.json');
 
@@ -21,15 +22,16 @@ const getContactById = async (contactId) => {
   }
 }
 
-const removeContact = async (contactId)  => {
+const removeContact = async (contactId) => {
   try {
     const contacts = await listContacts();
-    const newContactsList = contacts.filter((contact) => String(contact.id) !== String(contactId));
-    await fs.writeFile(contactsPath, JSON.stringify(newContactsList, null, 4))
+    const newContactsList = contacts.filter(
+      (contact) => String(contact.id) !== String(contactId));
+    await fs.writeFile(contactsPath, JSON.stringify(newContactsList, null, 4));
   } catch (err) {
-    console.log(err.message)
+    console.log(err.message);
   }
-}
+};
 
 const addContact = async (name, email, phone) => {
   try {
@@ -39,8 +41,8 @@ const addContact = async (name, email, phone) => {
     contacts.push(newContact);
     await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 4));
     return newContact;
-  } catch (error) {
-    console.log(error.message);
+  } catch (err) {
+    console.log(err.message);
   }
 };
 
